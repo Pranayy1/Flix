@@ -10,19 +10,28 @@ import './ModernMovieApp.css';
 // Initial local movies collection
 const INITIAL_LOCAL_MOVIES = [
   // Local files - Using import.meta.env.BASE_URL for GitHub Pages compatibility
+    // Local files - Using import.meta.env.BASE_URL for GitHub Pages compatibility
   { id: 'local-1', title: 'Blinding Lights', url: `${import.meta.env.BASE_URL}Blinding Lights.mp4`, type: 'local' },
-  { id: 'local-2', title: 'Hardy Sandhu', url: `${import.meta.env.BASE_URL}Hardy Sandhu.mp4`, type: 'local' },
-  { id: 'local-3', title: 'Kangana Tera Ni', url: `${import.meta.env.BASE_URL}Kangana Tera Ni.mp4`, type: 'local' },
-  { id: 'local-4', title: 'Symphony', url: `${import.meta.env.BASE_URL}Symphony.mp4`, type: 'local' },
+   { id: 'cloud-1', title: 'ShortFriend (Reel)', url: 'https://drive.google.com/file/d/1C91EUDBrEl3BHfTDR4kEd1gshRcUT165/preview', type: 'googledrive' },
+   { id: 'cloud-2', title: 'Blocked (Reel)', url: 'https://drive.google.com/file/d/1eB9mdzj4kusD8Woc0yynqJ4amHGpIJSE/preview', type: 'googledrive' },
+  
+   { id: 'cloud-3', title: 'Tu bhi aa (Reel)', url: 'https://drive.google.com/file/d/1vSuNIMvKpKnGNTA1xyfYv-aA_Jgy2rON/preview', type: 'googledrive' },
+   { id: 'cloud-4', title: 'Khuda bhi (Reel)', url: 'https://drive.google.com/file/d/12XJMX3WvOAlpNBbVE4XiO9iF54tpuim7/preview', type: 'googledrive' },
+   { id: 'cloud-5', title: 'Tune (Reel)', url: 'https://drive.google.com/file/d/13sj_8lTCKzIYTYdkXr3lJ1g2E4wiZGjj/preview', type: 'googledrive' },
+   { id: 'cloud-6', title: 'May 13 (Reel)', url: 'https://drive.google.com/file/d/1ZPCPII_jN6v_OgvQfIJlLRNxvQAzHHIL/preview', type: 'googledrive' },
+  
+  // { id: 'local-2', title: 'Hardy Sandhu', url: `${import.meta.env.BASE_URL}Hardy Sandhu.mp4`, type: 'local' },
+  // { id: 'local-3', title: 'Kangana Tera Ni', url: `${import.meta.env.BASE_URL}Kangana Tera Ni.mp4`, type: 'local' },
+  // { id: 'local-4', title: 'Symphony', url: `${import.meta.env.BASE_URL}Symphony.mp4`, type: 'local' },
   
   // Google Drive cloud videos - Add your cloud videos here
   // Template: { id: 'cloud-X', title: 'Movie Title', url: 'https://drive.google.com/file/d/FILE_ID/preview', type: 'googledrive' },
   
   // Example Google Drive videos (replace with your actual file IDs):
-  { id: 'cloud-1', title: 'Shikimori Edit', url: 'https://drive.google.com/file/d/18B_JmpNZQqAUMyaBSHFXyqLRAIaJ5po1/preview', type: 'googledrive' },
-  { id: 'cloud-2', title: 'Kantara Chapter 1', url: 'https://drive.google.com/file/d/1EaAcp3b-AAwm6CzkwSnaswF7S9JalQSh/preview', type: 'googledrive' },
-  // { id: 'cloud-2', title: 'My Movie 2', url: 'https://drive.google.com/file/d/2XYZabcdefgABCDEFGHIJKLMNOPQRSTUVW/preview', type: 'googledrive' },
+  // { id: 'cloud-1', title: 'Shikimori Edit', url: 'https://drive.google.com/file/d/18B_JmpNZQqAUMyaBSHFXyqLRAIaJ5po1/preview', type: 'googledrive' },
+  { id: 'cloud-7', title: 'Vaazha (Movie)', url: 'https://drive.google.com/file/d/1hoj6CfCnMdZQMfW7nabxK4nYgW4wS3ZA/preview', type: 'googledrive' },
   
+  { id: 'cloud-8', title: 'Kantara Chapter 1 (Movie)', url: 'https://drive.google.com/file/d/1EaAcp3b-AAwm6CzkwSnaswF7S9JalQSh/preview', type: 'googledrive' },
   // Dropbox cloud videos - Add your Dropbox videos here
   // Template: { id: 'cloud-X', title: 'Movie Title', url: 'https://dropbox.com/s/FILE_ID/movie.mp4?raw=1', type: 'dropbox' },
   
