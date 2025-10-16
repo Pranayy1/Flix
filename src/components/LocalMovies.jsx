@@ -9,11 +9,11 @@ import './ModernMovieApp.css';
 
 // Initial local movies collection
 const INITIAL_LOCAL_MOVIES = [
-  // Local files
-  { id: 'local-1', title: 'Blinding Lights', url: '/Blinding Lights.mp4', type: 'local' },
-  { id: 'local-2', title: 'Hardy Sandhu', url: '/Hardy Sandhu.mp4', type: 'local' },
-  { id: 'local-3', title: 'Kangana Tera Ni', url: '/Kangana Tera Ni.mp4', type: 'local' },
-  { id: 'local-4', title: 'Symphony', url: '/Symphony.mp4', type: 'local' },
+  // Local files - Using import.meta.env.BASE_URL for GitHub Pages compatibility
+  { id: 'local-1', title: 'Blinding Lights', url: `${import.meta.env.BASE_URL}Blinding Lights.mp4`, type: 'local' },
+  { id: 'local-2', title: 'Hardy Sandhu', url: `${import.meta.env.BASE_URL}Hardy Sandhu.mp4`, type: 'local' },
+  { id: 'local-3', title: 'Kangana Tera Ni', url: `${import.meta.env.BASE_URL}Kangana Tera Ni.mp4`, type: 'local' },
+  { id: 'local-4', title: 'Symphony', url: `${import.meta.env.BASE_URL}Symphony.mp4`, type: 'local' },
   
   // Google Drive cloud videos - Add your cloud videos here
   // Template: { id: 'cloud-X', title: 'Movie Title', url: 'https://drive.google.com/file/d/FILE_ID/preview', type: 'googledrive' },
