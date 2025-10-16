@@ -135,6 +135,13 @@ function LocalMovies() {
 
   // Stop all other videos
   const stopAllVideos = (currentId) => {
+    // Remove any existing fullscreen overlay (for cloud videos)
+    const existingOverlay = document.getElementById('fullscreen-overlay');
+    if (existingOverlay) {
+      existingOverlay.remove();
+    }
+
+    // Pause regular videos
     movies.forEach(movie => {
       if (movie.id !== currentId) {
         const element = videoRefs.current[movie.id];
@@ -147,12 +154,9 @@ function LocalMovies() {
 
   // Create fullscreen overlay for iframe videos
   const createFullscreenOverlay = (iframe, movieId) => {
-    // Remove existing overlay
-    const existingOverlay = document.getElementById('fullscreen-overlay');
-    if (existingOverlay) {
-      existingOverlay.remove();
-    }
-
+    // Stop all other videos and remove existing overlay
+    stopAllVideos(movieId);
+    
     // Create fullscreen overlay div
     const overlay = document.createElement('div');
     overlay.id = 'fullscreen-overlay';
