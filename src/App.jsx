@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Container from './components/Container';
 import MovieSearch from './components/MovieSearch';
 import LocalMovies from './components/LocalMovies';
@@ -12,9 +11,10 @@ function App() {
     <div className="app-bg">
       <header className="main-header">
         <div className="logo-title">
-          <span className="logo-icon">�</span>
+          <span className="logo-icon">🎬</span>
           <span className="brand">FlixVault</span>
           <span className="brand-tagline">Premium Movie Discovery</span>
+          <a className="back-link" href="https://pranayy1.github.io/homepage(Studyplay)/">← StudyPlay</a>
         </div>
         <nav className="nav-bar">
           <div className="nav-container">

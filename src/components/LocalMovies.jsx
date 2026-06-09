@@ -1,16 +1,9 @@
-
-
-
-
-
-
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import './ModernMovieApp.css';
 
 // Initial local movies collection
 const INITIAL_LOCAL_MOVIES = [
   // Local files - Using import.meta.env.BASE_URL for GitHub Pages compatibility
-    // Local files - Using import.meta.env.BASE_URL for GitHub Pages compatibility
   { id: 'local-1', title: 'Blinding Lights', url: `${import.meta.env.BASE_URL}Blinding Lights.mp4`, type: 'local' },
    { id: 'cloud-1', title: 'ShortFriend (Reel)', url: 'https://drive.google.com/file/d/1C91EUDBrEl3BHfTDR4kEd1gshRcUT165/preview', type: 'googledrive' },
    { id: 'cloud-2', title: 'Blocked (Reel)', url: 'https://drive.google.com/file/d/1eB9mdzj4kusD8Woc0yynqJ4amHGpIJSE/preview', type: 'googledrive' },
@@ -46,6 +39,7 @@ function LocalMovies() {
   const [newVideoTitle, setNewVideoTitle] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
   const videoRefs = useRef({});
+  const fullscreenTimeoutRef = useRef(null);
 
   // Convert cloud URLs to streaming URLs
   const processVideoUrl = (url) => {
@@ -90,7 +84,7 @@ function LocalMovies() {
   const addCloudVideo = () => {
     if (newVideoUrl && newVideoTitle) {
       const { streamUrl, type } = processVideoUrl(newVideoUrl);
-      
+
       const newMovie = {
         id: `cloud-${Date.now()}`,
         title: newVideoTitle,
@@ -98,8 +92,8 @@ function LocalMovies() {
         type: type,
         description: `${type.charAt(0).toUpperCase() + type.slice(1)} video`
       };
-      
-      setMovies([newMovie, ...movies]);
+
+      setMovies(prev => [newMovie, ...prev]);
       setNewVideoUrl('');
       setNewVideoTitle('');
       setShowAddForm(false);
@@ -118,19 +112,6 @@ function LocalMovies() {
       return element.mozRequestFullScreen();
     }
     return Promise.reject(new Error('Fullscreen not supported'));
-  };
-
-  const exitFullscreen = () => {
-    if (document.exitFullscreen) {
-      return document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-      return document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) {
-      return document.msExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      return document.mozCancelFullScreen();
-    }
-    return Promise.resolve();
   };
 
   // Stop all other videos
@@ -154,10 +135,8 @@ function LocalMovies() {
 
   // Create fullscreen overlay for iframe videos
   const createFullscreenOverlay = (iframe, movieId) => {
-    // Stop all other videos and remove existing overlay
     stopAllVideos(movieId);
-    
-    // Create fullscreen overlay div
+
     const overlay = document.createElement('div');
     overlay.id = 'fullscreen-overlay';
     overlay.style.cssText = `
@@ -173,7 +152,6 @@ function LocalMovies() {
       justify-content: center;
     `;
 
-    // Clone the iframe
     const clonedIframe = iframe.cloneNode(true);
     clonedIframe.style.cssText = `
       width: 100vw;
@@ -182,9 +160,8 @@ function LocalMovies() {
       background: black;
     `;
 
-    // Add close button
     const closeBtn = document.createElement('button');
-    closeBtn.innerHTML = '✕';
+    closeBtn.textContent = '\u2715';
     closeBtn.style.cssText = `
       position: absolute;
       top: 20px;
@@ -200,12 +177,6 @@ function LocalMovies() {
       z-index: 1000000;
     `;
 
-    closeBtn.onclick = () => {
-      overlay.remove();
-      setCurrentPlayingVideo(null);
-    };
-
-    // Add ESC key handler
     const handleEscKey = (e) => {
       if (e.key === 'Escape') {
         overlay.remove();
@@ -213,6 +184,15 @@ function LocalMovies() {
         document.removeEventListener('keydown', handleEscKey);
       }
     };
+
+    const removeOverlay = () => {
+      overlay.remove();
+      setCurrentPlayingVideo(null);
+      document.removeEventListener('keydown', handleEscKey);
+    };
+
+    closeBtn.onclick = removeOverlay;
+
     document.addEventListener('keydown', handleEscKey);
 
     overlay.appendChild(clonedIframe);
@@ -224,7 +204,6 @@ function LocalMovies() {
 
   // Main video click handler
   const handleVideoClick = async (movieId, movie) => {
-    // Stop all other videos
     stopAllVideos(movieId);
     setCurrentPlayingVideo(movieId);
 
@@ -232,20 +211,18 @@ function LocalMovies() {
     if (!element) return;
 
     if (movie.type === 'googledrive') {
-      // For Google Drive - create custom fullscreen overlay
       try {
-        // First try native fullscreen
         await enterFullscreen(element);
-      } catch (error) {
-        // If native fullscreen fails, use custom overlay
+      } catch {
         createFullscreenOverlay(element, movieId);
       }
     } else {
-      // For regular videos
       try {
         await element.play();
-        // Small delay then fullscreen
-        setTimeout(async () => {
+        if (fullscreenTimeoutRef.current) {
+          clearTimeout(fullscreenTimeoutRef.current);
+        }
+        fullscreenTimeoutRef.current = setTimeout(async () => {
           try {
             await enterFullscreen(element);
           } catch (error) {
@@ -296,20 +273,23 @@ function LocalMovies() {
 
   // Cleanup effects
   useEffect(() => {
-    // Cleanup event listeners
+    const currentVideoRefs = { ...videoRefs.current };
     return () => {
-      Object.values(videoRefs.current).forEach(element => {
+      Object.values(currentVideoRefs).forEach(element => {
         if (element && element._eventHandlers) {
           const { pauseHandler, endedHandler } = element._eventHandlers;
           if (pauseHandler) element.removeEventListener('pause', pauseHandler);
           if (endedHandler) element.removeEventListener('ended', endedHandler);
         }
       });
-      
-      // Remove any existing fullscreen overlay
+
       const overlay = document.getElementById('fullscreen-overlay');
       if (overlay) {
         overlay.remove();
+      }
+
+      if (fullscreenTimeoutRef.current) {
+        clearTimeout(fullscreenTimeoutRef.current);
       }
     };
   }, []);

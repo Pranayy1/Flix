@@ -1,11 +1,7 @@
-
-
-
-
-import React, { useState } from 'react';
+import { useState, useRef } from 'react';
 import './ModernMovieApp.css';
 
-const OMDB_API_KEY = '8007f10a'; // Replace with your OMDb API key
+const OMDB_API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 const OMDB_URL = 'https://www.omdbapi.com/';
 
 function MovieSearch() {
@@ -14,23 +10,40 @@ function MovieSearch() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [selectedMovie, setSelectedMovie] = useState(null);
+
+  if (!OMDB_API_KEY) {
+    return (
+      <div className="movie-search-container">
+        <div className="search-section">
+          <div className="search-header">
+            <h2 className="search-title">Configuration Required</h2>
+            <p className="search-subtitle">Please configure VITE_OMDB_API_KEY in your .env file</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
   const [movieDetails, setMovieDetails] = useState(null);
   const [detailsLoading, setDetailsLoading] = useState(false);
+  const abortControllerRef = useRef(null);
 
   const searchMovies = async (e) => {
     e.preventDefault();
-    if (!query) return;
+    if (!query.trim()) return;
+    if (abortControllerRef.current) abortControllerRef.current.abort();
     setLoading(true);
     setError('');
     setMovies([]);
     setSelectedMovie(null);
     setMovieDetails(null);
     try {
-      const res = await fetch(`${OMDB_URL}?apikey=${OMDB_API_KEY}&s=${encodeURIComponent(query)}`);
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+      const res = await fetch(`${OMDB_URL}?apikey=${OMDB_API_KEY}&s=${encodeURIComponent(query.trim())}`, { signal: controller.signal });
       const data = await res.json();
       if (data.Response === 'True' && data.Search) setMovies(data.Search);
       else setError(data.Error || 'No movies found.');
-    } catch (err) {
+    } catch {
       setError('Failed to fetch movies.');
     }
     setLoading(false);
@@ -191,8 +204,8 @@ function MovieSearch() {
                           <span className="rating-value">{movieDetails.imdbRating}/10</span>
                         </div>
                       )}
-                      {movieDetails.Ratings && movieDetails.Ratings.map((rating, index) => (
-                        <div key={index} className="rating-item">
+                      {movieDetails.Ratings && movieDetails.Ratings.map((rating) => (
+                        <div key={rating.Source} className="rating-item">
                           <span className="rating-source">{rating.Source}</span>
                           <span className="rating-value">{rating.Value}</span>
                         </div>
