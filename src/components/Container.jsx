@@ -1,5 +1,5 @@
 const Container = ({ children }) => (
-  <div className="container glassy-panel">
+  <div style={{ width: '100%' }}>
     {children}
   </div>
 );

@@ -1,264 +1,286 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
-
-body, .app-bg {
+.flix-app {
   min-height: 100vh;
-  background: linear-gradient(120deg, #f8fafc 0%, #e3f0ff 100%);
-  color: #2a2a2a;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  margin: 0;
-}
-
-.app-bg {
+  background: linear-gradient(135deg, #EFF6FF 0%, #FFFFFF 50%, #F5F3FF 100%);
+  background-attachment: fixed;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  color: #1e293b;
 }
 
+.flix-navbar {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 4px 24px rgba(99,102,241,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
 
-.main-header {
+.flix-navbar-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.8rem 3vw;
-  background: rgba(255,255,255,0.95);
-  box-shadow: 0 4px 32px rgba(59, 130, 246, 0.15);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  border-bottom: 1px solid rgba(59, 130, 246, 0.1);
-  backdrop-filter: blur(20px) saturate(1.3);
-  -webkit-backdrop-filter: blur(20px) saturate(1.3);
-  transition: all 0.3s ease;
+  height: 72px;
 }
 
-.main-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(37, 99, 235, 0.02));
-  pointer-events: none;
-}
-
-.logo-title {
+.flix-logo-group {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  position: relative;
-  z-index: 1;
+  gap: 12px;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
-.logo-icon {
-  font-size: 2.5rem;
-  filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.3));
-  animation: logoFloat 3s ease-in-out infinite;
+.flix-logo-icon {
+  font-size: 2rem;
 }
 
-@keyframes logoFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
-}
-
-.brand {
-  color: #2564eb;
+.flix-brand {
   font-family: 'Playfair Display', serif;
-  font-size: 2.2rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  letter-spacing: -0.5px;
-  background: linear-gradient(135deg, #2563eb, #3b82f6, #1d4ed8);
+  background: linear-gradient(135deg, #6366F1, #818CF8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.brand-tagline {
-  color: #7b8fa1;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.75rem;
-  font-weight: 500;
+.flix-tagline {
+  display: none;
+  font-size: 0.7rem;
+  color: #94a3b8;
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-left: 0.5rem;
-  opacity: 0.8;
+  font-weight: 500;
 }
 
-.nav-bar {
-  position: relative;
-  z-index: 1;
-}
-
-.nav-container {
+.flix-nav-center {
   display: flex;
-  gap: 0.5rem;
-  background: rgba(59, 130, 246, 0.08);
-  padding: 0.5rem;
-  border-radius: 25px;
-  backdrop-filter: blur(10px);
+  gap: 6px;
+  background: rgba(99,102,241,0.06);
+  padding: 4px;
+  border-radius: 14px;
 }
 
-.nav-btn {
+.flix-nav-btn {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
+  padding: 10px 20px;
   background: transparent;
   border: none;
-  color: #2563eb;
+  border-radius: 10px;
+  color: #64748b;
   font-family: 'Inter', sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 500;
-  padding: 0.8rem 1.5rem;
-  border-radius: 20px;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   cursor: pointer;
-  position: relative;
-  overflow: hidden;
+  transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
-.nav-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-  transition: left 0.5s;
+.flix-nav-btn:hover {
+  background: rgba(99,102,241,0.1);
+  color: #6366F1;
 }
 
-.nav-btn:hover::before {
-  left: 100%;
-}
-
-.nav-btn.active {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
+.flix-nav-btn.active {
+  background: linear-gradient(135deg, #6366F1, #818CF8);
   color: white;
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99,102,241,0.3);
 }
 
-.nav-btn:hover:not(.active) {
-  background: rgba(59, 130, 246, 0.15);
-  transform: translateY(-1px);
-}
-
-.nav-icon {
+.flix-nav-icon {
   font-size: 1rem;
-  transition: transform 0.3s ease;
 }
 
-.nav-btn:hover .nav-icon {
-  transform: scale(1.1);
-}
-
-.nav-text {
-  font-weight: 600;
-}
-
-.main-content {
-  flex: 1;
+.flix-nav-right {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 2vw 0 3vw 0;
+  align-items: center;
+  gap: 12px;
 }
 
-.glassy-panel {
-  background: rgba(255,255,255,0.85);
-  border-radius: 24px;
-  box-shadow: 0 4px 32px 0 #b3e5fc33;
-  padding: 2.5rem 2rem;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-.back-link {
+.flix-back-link {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  margin-left: 1rem;
-  padding: 4px 10px;
-  background: rgba(59, 130, 246, 0.1);
-  border-radius: 8px;
-  color: #2563eb;
-  font-size: 0.8rem;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(99,102,241,0.08);
+  border-radius: 10px;
+  color: #6366F1;
+  font-size: 0.85rem;
   font-weight: 600;
   text-decoration: none;
   transition: all 0.2s;
 }
-.back-link:hover {
-  background: rgba(59, 130, 246, 0.2);
+
+.flix-back-link:hover {
+  background: rgba(99,102,241,0.15);
   transform: translateX(-2px);
 }
 
-.footer {
-  text-align: center;
-  padding: 1.2rem 0 0.7rem 0;
-  color: #7b8fa1;
+.flix-back-arrow {
+  font-size: 1.1rem;
+}
+
+.flix-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.flix-hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #6366F1;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+.flix-mobile-menu {
+  display: none;
+  padding: 12px 24px 20px;
+  border-top: 1px solid #e5e7eb;
+  background: rgba(255,255,255,0.95);
+}
+
+.flix-mobile-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  color: #64748b;
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
-  background: none;
-  letter-spacing: 1px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: left;
 }
 
-/* Responsive Design for Header */
+.flix-mobile-nav-btn:hover {
+  background: rgba(99,102,241,0.08);
+  color: #6366F1;
+}
+
+.flix-mobile-nav-btn.active {
+  background: rgba(99,102,241,0.12);
+  color: #6366F1;
+  font-weight: 600;
+}
+
+.flix-mobile-back-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 14px 16px;
+  background: rgba(99,102,241,0.06);
+  border-radius: 10px;
+  color: #6366F1;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.flix-main {
+  flex: 1;
+  padding: 32px 24px;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.flix-footer {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid #e5e7eb;
+  margin-top: 48px;
+}
+
+.flix-footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.flix-footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.flix-footer-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #6366F1, #818CF8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.flix-footer-text {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
 @media (max-width: 768px) {
-  .main-header {
-    padding: 1.5rem 2rem;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .logo-title {
-    flex-direction: column;
-    text-align: center;
-    gap: 0.5rem;
-  }
-  
-  .brand {
-    font-size: 1.8rem;
-  }
-  
-  .brand-tagline {
-    font-size: 0.7rem;
-    margin-left: 0;
-  }
-  
-  .nav-container {
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .nav-btn {
-    flex: 1;
-    justify-content: center;
-    padding: 1rem 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .main-header {
-    padding: 1.2rem 1rem;
-  }
-  
-  .brand {
-    font-size: 1.6rem;
-  }
-  
-  .nav-btn {
-    padding: 0.8rem 1rem;
-    font-size: 0.9rem;
-  }
-  
-  .nav-text {
+  .flix-nav-center {
     display: none;
   }
-  
-  .nav-icon {
-    font-size: 1.2rem;
+  .flix-hamburger {
+    display: flex;
+  }
+  .flix-mobile-menu {
+    display: block;
+  }
+  .flix-back-link {
+    display: none;
+  }
+  .flix-tagline {
+    display: none;
+  }
+  .flix-navbar-inner {
+    height: 64px;
+    padding: 0 16px;
+  }
+  .flix-brand {
+    font-size: 1.3rem;
+  }
+  .flix-main {
+    padding: 20px 16px;
+  }
+  .flix-footer-inner {
+    padding: 20px 16px;
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (min-width: 769px) {
+  .flix-tagline {
+    display: block;
   }
 }
