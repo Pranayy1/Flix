@@ -273,9 +273,8 @@ function LocalMovies() {
 
   // Cleanup effects
   useEffect(() => {
-    const currentVideoRefs = { ...videoRefs.current };
     return () => {
-      Object.values(currentVideoRefs).forEach(element => {
+      Object.values(videoRefs.current).forEach(element => {
         if (element && element._eventHandlers) {
           const { pauseHandler, endedHandler } = element._eventHandlers;
           if (pauseHandler) element.removeEventListener('pause', pauseHandler);

@@ -10,6 +10,11 @@ function MovieSearch() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [movieDetails, setMovieDetails] = useState(null);
+  const [detailsLoading, setDetailsLoading] = useState(false);
+  const [detailsError, setDetailsError] = useState('');
+  const abortControllerRef = useRef(null);
+  const detailsAbortRef = useRef(null);
 
   if (!OMDB_API_KEY) {
     return (
@@ -23,9 +28,6 @@ function MovieSearch() {
       </div>
     );
   }
-  const [movieDetails, setMovieDetails] = useState(null);
-  const [detailsLoading, setDetailsLoading] = useState(false);
-  const abortControllerRef = useRef(null);
 
   const searchMovies = async (e) => {
     e.preventDefault();
@@ -43,23 +45,33 @@ function MovieSearch() {
       const data = await res.json();
       if (data.Response === 'True' && data.Search) setMovies(data.Search);
       else setError(data.Error || 'No movies found.');
-    } catch {
-      setError('Failed to fetch movies.');
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        setError('Failed to fetch movies.');
+      }
     }
     setLoading(false);
   };
 
   const fetchMovieDetails = async (imdbID) => {
+    if (detailsAbortRef.current) detailsAbortRef.current.abort();
     setDetailsLoading(true);
+    setDetailsError('');
     try {
-      const res = await fetch(`${OMDB_URL}?apikey=${OMDB_API_KEY}&i=${imdbID}&plot=full`);
+      const controller = new AbortController();
+      detailsAbortRef.current = controller;
+      const res = await fetch(`${OMDB_URL}?apikey=${OMDB_API_KEY}&i=${imdbID}&plot=full`, { signal: controller.signal });
       const data = await res.json();
       if (data.Response === 'True') {
         setMovieDetails(data);
         setSelectedMovie(imdbID);
+      } else {
+        setDetailsError(data.Error || 'Failed to load details.');
       }
     } catch (err) {
-      console.error('Failed to fetch movie details:', err);
+      if (err.name !== 'AbortError') {
+        setDetailsError('Failed to fetch movie details.');
+      }
     }
     setDetailsLoading(false);
   };
@@ -214,6 +226,11 @@ function MovieSearch() {
                   </div>
                 </div>
               </>
+            ) : detailsError ? (
+              <div className="modal-loading">
+                <p className="error-msg">{detailsError}</p>
+                <button className="search-btn" onClick={closeDetails} style={{ marginTop: '10px' }}>Close</button>
+              </div>
             ) : null}
           </div>
         </div>
