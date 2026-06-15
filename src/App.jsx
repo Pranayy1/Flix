@@ -14,7 +14,7 @@ function App() {
           <span className="logo-icon">🎬</span>
           <span className="brand">FlixVault</span>
           <span className="brand-tagline">Premium Movie Discovery</span>
-          <a className="back-link" href="https://pranayy1.github.io/homepage(Studyplay)/">← StudyPlay</a>
+          <a className="back-link" href="https://pranayy1.github.io/Studyplay/">← StudyPlay</a>
         </div>
         <nav className="nav-bar">
           <div className="nav-container">
